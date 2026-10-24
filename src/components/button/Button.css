@@ -1,0 +1,64 @@
+.isometric-button-socket {
+  --side-color: color-mix(in oklch, var(--btn-color), black 34%);
+  --dish-highlight: color-mix(in oklch, var(--btn-color), white 25%);
+  --dish-shadow: color-mix(in oklch, var(--btn-color), black 22%);
+  --socket-bg: #7a7a7a;
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--btn-w) + var(--socket-gap, 22px) );
+  height: calc(var(--btn-h) + var(--socket-gap, 22px) );
+  background: var(--socket-bg);
+  border-radius: calc(var(--btn-radius) + 8px);
+  box-shadow:
+    inset 0 2px 6px #000e,
+    0 12px 30px rgba(0, 0, 0, 0.12);
+  user-select: none;
+  touch-action: none;
+  cursor: pointer;
+  transition: width 0.15s ease, height 0.15s ease, border-radius 0.15s ease;
+
+  & .isometric-button-face {
+    position: relative;
+    width: var(--btn-w);
+    height: var(--btn-h);
+    background: var(--btn-color);
+    color: var(--btn-text);
+    border-radius: var(--btn-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--btn-font-family, inherit);
+    font-size: var(--btn-font-size);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    transform: var(--face-transform);
+    box-shadow: var(--face-shadow);
+    transition:
+      transform 70ms ease,
+      box-shadow 70ms ease,
+      width 0.15s ease,
+      height 0.15s ease,
+      border-radius 0.15s ease,
+      font-size 0.1s ease;
+
+    & span {
+      pointer-events: none;
+    }
+  }
+
+  &.is-hovered:not(.is-pressed) .isometric-button-face {
+    filter: brightness(1.06);
+  }
+
+  &.is-flat {
+    background: transparent;
+    box-shadow: none;
+
+    &.is-pressed .isometric-button-face {
+      transform: scale(0.96) !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+}
