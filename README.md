@@ -1,32 +1,30 @@
-# React + TypeScript + Vite
+# Custom UI Elements 
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A lightweight library of custom, accessible UI components built completely from scratch **without** native elements and zero third-party UI dependencies.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Key Features
 
-## React Compiler
+- **No Native Inputs / Zero Library Inheritance:** Pure `<div>` components powered by hardware Pointer Events (`setPointerCapture`, bounding-box hit-testing).
+- **OOP Architecture:** Clean separation of concerns using TypeScript classes:
+  - `ButtonStyleModel` & `CheckBoxModel`: encapsulate geometry, dynamic 3D shadows, and CSS variable exports.
+  - `CheckBoxGroupController`: handles tri-state derivation (`checked`, `unchecked`, `indeterminate`) and parent-child two-way synchronization.
+- **Adaptive Typography:** Algorithmic auto-fitting font size for buttons based on container dimensions.
+- **Modern CSS:** Native CSS nesting, CSS custom properties, and zero visual artifacts or residual shadows.
+- **Live Customization:** Interactive parameter docks for dimensions, radiuses, 3D depths, and color palettes in real-time.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## Project Structure
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+```text
+src/
+├── components/
+│   ├── button/           # Button component + ButtonStyleModel + CSS
+│   └── checkbox/         # CheckBox component + CheckBoxModel + CheckBoxGroupController + CSS
+├── pages/
+│   ├── ButtonPage.tsx    # Page 1: 3D Button showcase with parameter dock
+│   └── CheckBoxPage.tsx  # Page 2: File manager table with parent-child checkboxes
+├── App.tsx               # Main shell & tab navigation
+└── style.css             # Global styling & layout
