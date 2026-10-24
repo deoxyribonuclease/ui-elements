@@ -13,9 +13,9 @@ export interface ButtonProps {
   color?: string
   textColor?: string
   label?: string
+  disabled?: boolean
   onAction?: () => void
 }
-
 
 export function Button(props: ButtonProps = {}) {
   const [isHovered, setIsHovered] = useState(false)
@@ -26,18 +26,20 @@ export function Button(props: ButtonProps = {}) {
   const styles = useMemo(() => new ButtonStyleModel(props), [props])
 
   const handlePressStart = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0) return
+    if (props.disabled || event.button !== 0) return
     buttonRef.current?.setPointerCapture?.(event.pointerId)
     setIsPressed(true)
   }
 
   const handlePressEnd = () => {
-    if (!isPressed) return
-      setIsPressed(false)
-      props.onAction?.()
+    if (props.disabled || !isPressed) return
+    setIsPressed(false)
+    props.onAction?.()
   }
 
-  const handleHoverStart = () => { setIsHovered(true) }
+  const handleHoverStart = () => {
+    if (!props.disabled) setIsHovered(true)
+  }
 
   const handleHoverEnd = () => {
     setIsHovered(false)
@@ -49,10 +51,10 @@ export function Button(props: ButtonProps = {}) {
     styles.isFlat ? 'is-flat' : '',
     isPressed ? 'is-pressed' : '',
     isHovered ? 'is-hovered' : '',
+    props.disabled ? 'is-disabled' : '',
   ]
     .filter(Boolean)
     .join(' ')
-
 
   return (
     <div
@@ -70,7 +72,6 @@ export function Button(props: ButtonProps = {}) {
     </div>
   )
 }
-
 
 export class ButtonStyleModel {
   readonly width: number
@@ -101,7 +102,6 @@ export class ButtonStyleModel {
     return this.depth <= 0
   }
 
-  // auto font size
   calculateFontSize(): number {
     if (!this.adaptiveText) {
       return this.fontSize
@@ -118,23 +118,9 @@ export class ButtonStyleModel {
     return Math.max(11, Math.min(bestFitSize, 92))
   }
 
-  // RGP config
-  isLightBackground(): boolean {
-    const hex = this.color.replace('#', '')
-    if (hex.length < 6) return false
-
-    const red = parseInt(hex.substring(0, 2), 16)
-    const green = parseInt(hex.substring(2, 4), 16)
-    const blue = parseInt(hex.substring(4, 6), 16)
-
-    const brightness = red * 0.299 + green * 0.587 + blue * 0.114
-    return brightness > 140
-  }
-
-
   generate3DShadow(isPressed: boolean): string {
     if (this.isFlat) {
-      return '0 4px 14px rgba(0, 0, 0, 0.12)'
+      return '0 2px 8px rgba(0, 0, 0, 0.12)'
     }
 
     if (isPressed) {
@@ -157,15 +143,19 @@ export class ButtonStyleModel {
     return shadowLayers.join(',')
   }
 
-  // export to CSS
   toCSSVariables(isPressed: boolean): CSSProperties {
-
     let buttonOffset = 'none'
     if (!this.isFlat) {
       buttonOffset = isPressed
         ? 'translate(2px, -2px)'
         : `translate(${this.depth}px, -${this.depth}px)`
     }
+
+    const socketGap = this.isFlat
+      ? '0px'
+      : this.depth <= 4
+        ? `${this.depth * 2 + 4}px`
+        : '22px'
 
     return {
       '--btn-w': `${this.width}px`,
@@ -177,7 +167,7 @@ export class ButtonStyleModel {
       '--btn-text': this.textColor,
       '--face-transform': buttonOffset,
       '--face-shadow': this.generate3DShadow(isPressed),
-      '--socket-gap': '22px',
+      '--socket-gap': socketGap,
     } as CSSProperties
   }
 }
