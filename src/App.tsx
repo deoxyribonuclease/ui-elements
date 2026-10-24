@@ -16,7 +16,6 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      {/* Навігація між сторінками */}
       <nav>
         <a
           className={currentPage === 1 ? 'active' : ''}

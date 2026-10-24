@@ -86,9 +86,7 @@ export function CheckBoxPage() {
 
   return (
     <div className="page-workspace page-workspace-table">
-      {/* Сувора таблиця файлів з переповненням та прокруткою */}
       <div className="file-table-card">
-        {/* Панель дій таблиці з нашими кастомними кнопками Button */}
         <div className="file-table-toolbar">
           <span className="file-table-title">Files ({files.length})</span>
           <div className="file-table-actions">
@@ -118,7 +116,6 @@ export function CheckBoxPage() {
           </div>
         </div>
 
-        {/* Контейнер зі скролом при переповненні */}
         <div className="file-table-scroll-container">
           <table className="file-table">
             <thead>
@@ -170,7 +167,6 @@ export function CheckBoxPage() {
         </div>
       </div>
 
-      {/* Панель налаштувань параметрів чекбокса */}
       <div className={`control-dock-wrapper ${isDockOpen ? 'is-open' : 'is-collapsed'}`}>
         <div className="control-dock-toggle">
           <Button
@@ -187,7 +183,6 @@ export function CheckBoxPage() {
         </div>
 
         <div className="control-dock">
-        {/* Геометрія */}
         <div className="dock-group">
           <span className="dock-group-title">Geometry</span>
           <div className="dock-group-items">
@@ -221,7 +216,6 @@ export function CheckBoxPage() {
 
         <div className="dock-divider" />
 
-        {/* Кольори: грань, сокет (рамка), галочка */}
         <div className="dock-group">
           <span className="dock-group-title">Colors</span>
           <div className="dock-group-items">

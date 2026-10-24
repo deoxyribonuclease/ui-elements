@@ -67,7 +67,6 @@ export function ButtonPage() {
         </div>
 
         <div className="control-dock">
-        {/* Button */}
         <div className="dock-group">
           <span className="dock-group-title">Button</span>
           <div className="dock-group-items">
@@ -136,7 +135,6 @@ export function ButtonPage() {
 
     
 
-        {/* Text */}
         <div className="dock-group">
           <span className="dock-group-title">Text</span>
           <div className="dock-group-items">
