@@ -3,6 +3,14 @@
   box-sizing: border-box;
 }
 
+html, body {
+  width: 100%;
+  min-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 body {
   background: #eaedf1;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -11,12 +19,18 @@ body {
 }
 
 .app-shell {
+  width: 100%;
+  min-width: 100%;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 nav {
+  width: 100%;
+  min-width: 100%;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,6 +38,7 @@ nav {
   padding: 0.9rem 2rem;
   background: #ffffff;
   border-bottom: 1px solid #d9dfe6;
+  flex-shrink: 0;
 
   & a {
     cursor: pointer;
@@ -46,8 +61,10 @@ nav {
 }
 
 .content {
+  width: 100%;
   flex: 1;
-  display: grid;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-workspace {
@@ -57,16 +74,17 @@ nav {
   justify-content: center;
   position: relative;
   min-height: calc(100dvh - 54px);
-  padding-bottom: 7.5rem;
+  padding: 1.5rem 1rem 9.5rem;
   gap: 1.5rem;
+  width: 100%;
 
   &.page-workspace-table {
     justify-content: flex-start;
     padding-top: 3.5rem;
+    padding-bottom: 11rem;
   }
 }
 
-/* Decoupled external counter readout */
 .counter-badge {
   display: inline-flex;
   align-items: center;
@@ -96,62 +114,63 @@ nav {
 }
 
 .button-stage {
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 1rem 0;
 }
 
-.page-blank {
-  display: grid;
-  place-items: center;
-  min-height: calc(100dvh - 54px);
-}
-
-.showcase-box {
+.control-dock-wrapper {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  background: #ffffffa0;
-  backdrop-filter: blur(8px);
-  padding: 2.5rem 3.5rem;
-  border-radius: 24px;
-  border: 1px solid #dce2e9;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  gap: 6px;
+  pointer-events: none;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+
+  & > * {
+    pointer-events: auto;
+  }
+
+  &.is-collapsed {
+    transform: translateX(-50%) translateY(calc(100% - 22px));
+
+    & .control-dock {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
 }
 
-.showcase-desc {
-  font-size: 0.85rem;
-  color: #636d7e;
-  margin-top: -0.5rem;
-  font-weight: 500;
-}
-
-.empty-state {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #7b8390;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+.control-dock-toggle {
+  display: flex;
+  justify-content: center;
 }
 
 .control-dock {
-  position: fixed;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  width: min(840px, calc(100vw - 2rem));
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 1.25rem;
   align-items: center;
-  background: rgba(255, 255, 255, 0.9);
+  justify-content: space-around;
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(14px);
-  padding: 0.75rem 1.6rem;
-  border-radius: 40px;
+  padding: 0.75rem 1.4rem;
+  border-radius: 28px;
   border: 1px solid #d4dbe4;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  width: 60vw;
-  max-width: 95vw;
-  z-index: 10;
+  box-sizing: border-box;
+  opacity: 1;
+  transition: opacity 0.25s ease;
 
   & .dock-group {
     display: flex;
@@ -202,11 +221,14 @@ nav {
         color: #8c96a5;
         font-weight: 600;
         margin-left: 0.4rem;
+        min-width: 36px;
+        text-align: right;
+        display: inline-block;
       }
     }
 
     & input[type="range"] {
-      width: 90px;
+      width: 85px;
       height: 5px;
       accent-color: #1a1c20;
       cursor: pointer;
@@ -254,34 +276,10 @@ nav {
 
     &.ctrl-checkbox-item {
       justify-content: center;
-
-      & .checkbox-label {
-        font-size: 0.74rem;
-        font-weight: 700;
-        color: #3b424e;
-        display: flex;
-        align-items: center;
-        gap: 0.45rem;
-        cursor: pointer;
-        user-select: none;
-
-        & input[type="checkbox"] {
-          accent-color: #1a1c20;
-          cursor: pointer;
-          width: 15px;
-          height: 15px;
-        }
-
-        & span {
-          color: inherit;
-          font-weight: 700;
-        }
-      }
     }
   }
 }
 
-/* CheckBox Page 2 Demo Components */
 .file-table-card {
   background: #ffffff;
   border: 1px solid #d9dfe6;
@@ -316,12 +314,14 @@ nav {
 }
 
 .file-table-scroll-container {
-  max-height: 445px;
+  max-height: min(445px, calc(100dvh - 310px));
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
 
   &::-webkit-scrollbar-track {
@@ -340,6 +340,7 @@ nav {
 
 .file-table {
   width: 100%;
+  min-width: 460px;
   border-collapse: collapse;
   text-align: left;
   table-layout: fixed;
@@ -420,89 +421,110 @@ nav {
   }
 }
 
-.checkbox-card {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(14px);
-  border: 1px solid #dce2e9;
-  border-radius: 24px;
-  padding: 1.8rem 2.2rem;
-  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.05);
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.checkbox-card-header {
-  display: flex;
-  align-items: center;
-}
-
-.checkbox-card-divider {
-  height: 1px;
-  background: #e2e8f0;
-  margin: 0.1rem 0;
-}
-
-.checkbox-card-children {
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
-  padding-left: 1.75rem;
-  border-left: 2px dashed #cbd5e1;
-  margin-left: 1.15rem;
-}
-
-.counter-state-badge {
-  font-size: 0.78rem;
-  font-weight: 800;
-  padding: 3px 10px;
-  border-radius: 8px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: all 0.2s ease;
-
-  &.state-checked {
-    background: #dcfce7;
-    color: #15803d;
-    border: 1px solid #bbf7d0;
+@media (max-width: 900px) {
+  .control-dock-wrapper {
+    bottom: 0.85rem;
   }
 
-  &.state-unchecked {
-    background: #f1f5f9;
-    color: #64748b;
-    border: 1px solid #e2e8f0;
+  .control-dock {
+    width: calc(100vw - 1.5rem);
+    padding: 0.7rem 1.2rem;
+    gap: 1rem;
+    border-radius: 20px;
   }
 
-  &.state-indeterminate {
-    background: #fef3c7;
-    color: #b45309;
-    border: 1px solid #fde68a;
+  .control-dock .dock-group-items {
+    gap: 0.85rem;
   }
 }
 
-.color-presets {
-  display: flex;
-  gap: 6px;
-  align-items: center;
+@media (max-width: 680px) {
+  nav {
+    padding: 0.75rem 1rem;
+    gap: 1.5rem;
 
-  & .preset-btn {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #ffffff;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-    transition: transform 0.15s, outline 0.15s;
+    & a {
+      font-size: 0.76rem;
+    }
+  }
 
-    &:hover {
-      transform: scale(1.18);
+  .page-workspace {
+    padding: 1rem 0.75rem 13rem;
+    gap: 1.25rem;
+
+    &.page-workspace-table {
+      padding-top: 1.5rem;
+      padding-bottom: 14rem;
+    }
+  }
+
+  .counter-badge {
+    padding: 0.35rem 0.9rem;
+  }
+
+  .file-table-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+  }
+
+  .file-table-toolbar {
+    padding: 0.6rem 0.85rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .control-dock-wrapper {
+    bottom: 0.5rem;
+
+    &.is-collapsed {
+      transform: translateX(-50%) translateY(calc(100% - 22px));
+    }
+  }
+
+  .control-dock {
+    padding: 0.65rem 0.85rem;
+    border-radius: 18px;
+    width: calc(100vw - 1rem);
+    max-height: 42vh;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+
+    & .dock-divider {
+      width: 100%;
+      height: 1px;
+      margin: 0.1rem 0;
     }
 
-    &.active {
-      outline: 2px solid #1a1c20;
-      outline-offset: 1px;
+    & .dock-group-title {
+      text-align: center;
+    }
+
+    & .dock-group-items {
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    & .ctrl-item {
+      align-items: center;
+
+      & label {
+        font-size: 0.65rem;
+      }
+
+      & input[type="range"] {
+        width: 70px;
+      }
+
+      & select {
+        max-width: 110px;
+      }
+
+      & input[type="text"] {
+        width: 65px;
+      }
     }
   }
 }

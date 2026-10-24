@@ -13,6 +13,7 @@ const STANDARD_FONTS = [
 
 export function ButtonPage() {
   const [clickCount, setClickCount] = useState(0)
+  const [isDockOpen, setIsDockOpen] = useState(true)
 
   const [buttonWidth, setButtonWidth] = useState(150)
   const [buttonHeight, setButtonHeight] = useState(120)
@@ -50,7 +51,22 @@ export function ButtonPage() {
         />
       </div>
 
-      <div className="control-dock">
+      <div className={`control-dock-wrapper ${isDockOpen ? 'is-open' : 'is-collapsed'}`}>
+        <div className="control-dock-toggle">
+          <Button
+            label={isDockOpen ? '▼' : '▲'}
+            width={38}
+            height={22}
+            radius={11}
+            depth={2}
+            fontSize={10}
+            color="#1e293b"
+            textColor="#ffffff"
+            onAction={() => setIsDockOpen(!isDockOpen)}
+          />
+        </div>
+
+        <div className="control-dock">
         {/* Button */}
         <div className="dock-group">
           <span className="dock-group-title">Button</span>
@@ -62,7 +78,7 @@ export function ButtonPage() {
               <input
                 type="range"
                 min="80"
-                max="600"
+                max="500"
                 value={buttonWidth}
                 onChange={(e) => setButtonWidth(Number(e.target.value))}
               />
@@ -75,7 +91,7 @@ export function ButtonPage() {
               <input
                 type="range"
                 min="60"
-                max="600"
+                max="500"
                 value={buttonHeight}
                 onChange={(e) => setButtonHeight(Number(e.target.value))}
               />
@@ -118,7 +134,7 @@ export function ButtonPage() {
           </div>
         </div>
 
-        <div className="dock-divider" />
+    
 
         {/* Text */}
         <div className="dock-group">
@@ -186,5 +202,6 @@ export function ButtonPage() {
         </div>
       </div>
     </div>
-  )
+  </div>
+)
 }

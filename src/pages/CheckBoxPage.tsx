@@ -20,6 +20,7 @@ const MOCK_EXTENSIONS = ['json', 'dat', 'bin', 'log', 'yaml', 'csv', 'lock']
 
 export function CheckBoxPage() {
   const [files, setFiles] = useState<FileItem[]>(INITIAL_FILES)
+  const [isDockOpen, setIsDockOpen] = useState(true)
 
   const [cbSize, setCbSize] = useState(20)
   const [cbRadius, setCbRadius] = useState(4)
@@ -170,7 +171,22 @@ export function CheckBoxPage() {
       </div>
 
       {/* Панель налаштувань параметрів чекбокса */}
-      <div className="control-dock">
+      <div className={`control-dock-wrapper ${isDockOpen ? 'is-open' : 'is-collapsed'}`}>
+        <div className="control-dock-toggle">
+          <Button
+            label={isDockOpen ? '▼' : '▲'}
+            width={38}
+            height={22}
+            radius={11}
+            depth={2}
+            fontSize={10}
+            color="#1e293b"
+            textColor="#ffffff"
+            onAction={() => setIsDockOpen(!isDockOpen)}
+          />
+        </div>
+
+        <div className="control-dock">
         {/* Геометрія */}
         <div className="dock-group">
           <span className="dock-group-title">Geometry</span>
@@ -239,5 +255,6 @@ export function CheckBoxPage() {
         </div>
       </div>
     </div>
-  )
+  </div>
+)
 }
